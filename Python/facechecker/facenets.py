@@ -15,6 +15,7 @@ import facenet
 import align.detect_face
 import pickle
 from scipy import misc
+img_paths_list = []
 def main(args):
     args_filepaths = args.image_files
     image_size = args.image_size
@@ -93,6 +94,7 @@ def load_and_align_data(image_paths, image_size, margin, gpu_memory_fraction):
     img_list = [] #[None] * nrof_samples
     for i in range(nrof_samples):
         print('%1d: %s' % (i, image_paths[i]))
+        img_paths_list.append(image_paths[i])
         img = misc.imread(os.path.expanduser(image_paths[i]))
         img_size = np.asarray(img.shape)[0:2]
         try:
@@ -146,7 +148,22 @@ pkl_path = "img_facenet.pkl"
 with open(pkl_path, 'rb') as f:
     data = pickle.load(f)
 
-A = data['Anthony_Hopkins_0001.jpg']
-B = data['Anthony_Hopkins_0002.jpg']
-print(data[3])
+#A = data['Anthony_Hopkins_0001.jpg']
+#B = data['Anthony_Hopkins_0002.jpg']
+#print(img_paths_list)
+A = data[img_paths_list[0].split('/')[-1]]
+B = data[img_paths_list[1].split('/')[-1]]
+C = data[img_paths_list[2].split('/')[-1]]
+D = data[img_paths_list[3].split('/')[-1]]
+print("A,B")
 print(scipy.spatial.distance.euclidean(A, B))
+print("A,C")
+print(scipy.spatial.distance.euclidean(A, C))
+print("B,C")
+print(scipy.spatial.distance.euclidean(B, C))
+print("A,D")
+print(scipy.spatial.distance.euclidean(A, D))
+print("B,D")
+print(scipy.spatial.distance.euclidean(B, D))
+print("C,D")
+print(scipy.spatial.distance.euclidean(C, D))
