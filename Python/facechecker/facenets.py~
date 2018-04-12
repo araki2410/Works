@@ -8,7 +8,7 @@ import scipy
 import tensorflow as tf
 import numpy as np
 import sys
-sys.path.append("/home/yanai-lab/araki-t/Git/facenet/src/")
+sys.path.append("../../facenet/src/")
 import os
 import argparse
 import facenet
@@ -148,5 +148,5 @@ with open(pkl_path, 'rb') as f:
 
 A = data['Anthony_Hopkins_0001.jpg']
 B = data['Anthony_Hopkins_0002.jpg']
-print(data[3])
+
 print(scipy.spatial.distance.euclidean(A, B))
