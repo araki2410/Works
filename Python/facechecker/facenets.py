@@ -16,6 +16,8 @@ import align.detect_face
 import pickle
 from scipy import misc
 img_paths_list = []
+imglist = []
+distance = {}
 def main(args):
     args_filepaths = args.image_files
     image_size = args.image_size
@@ -121,8 +123,7 @@ def load_and_align_data(image_paths, image_size, margin, gpu_memory_fraction):
 
 def parse_arguments(argv):
     parser = argparse.ArgumentParser()
-    parser.add_argument('model', type=str, 
-        help='Could be either a directory containing the meta_file and ckpt_file or a model protobuf (.pb) file')
+    parser.add_argument('--model', type=str, help='Could be either a directory containing the meta_file and ckpt_file or a model protobuf (.pb) file', default="/export/space/araki-t/Models/20180402-114759/20180402-114759.pb")
     parser.add_argument('image_files', type=str, nargs='+', help='Images to compare')
     parser.add_argument('--image_size', type=int,
         help='Image size (height, width) in pixels.', default=160)
@@ -150,20 +151,24 @@ with open(pkl_path, 'rb') as f:
 
 #A = data['Anthony_Hopkins_0001.jpg']
 #B = data['Anthony_Hopkins_0002.jpg']
-#print(img_paths_list)
-A = data[img_paths_list[0].split('/')[-1]]
-B = data[img_paths_list[1].split('/')[-1]]
-C = data[img_paths_list[2].split('/')[-1]]
-D = data[img_paths_list[3].split('/')[-1]]
-print("A,B")
-print(scipy.spatial.distance.euclidean(A, B))
-print("A,C")
-print(scipy.spatial.distance.euclidean(A, C))
-print("B,C")
-print(scipy.spatial.distance.euclidean(B, C))
-print("A,D")
-print(scipy.spatial.distance.euclidean(A, D))
-print("B,D")
-print(scipy.spatial.distance.euclidean(B, D))
-print("C,D")
-print(scipy.spatial.distance.euclidean(C, D))
+print(img_paths_list)
+for i in img_paths_list:
+    imglist.append(i.split('/')[-1])
+#print(imglist)
+
+# A = data[img_paths_list[0].split('/')[-1]]
+# B = data[img_paths_list[1].split('/')[-1]]
+
+# print("A,B")
+# print(scipy.spatial.distance.euclidean(A, B))
+# print("A,C")
+# print(scipy.spatial.distance.euclidean(A, C))
+
+
+for i in imglist:
+    distance[i] = scipy.spatial.distance.euclidean(data[i], data[imglist[-1]])
+#    print(i)
+#    print(scipy.spatial.distance.euclidean(data[i], data[imglist[-1]]))
+
+for j,k in sorted(distance.items(), key=lambda x:x[1]):
+    print(k,"\t",j)
